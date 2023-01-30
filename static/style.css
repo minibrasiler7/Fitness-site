@@ -1,0 +1,12 @@
+.login_form{
+    padding: 20%;
+    }
+.positive_flash{
+    margin: auto;
+    color: green;
+}
+.negative_flash{
+    margin: auto;
+    color:red;
+
+}

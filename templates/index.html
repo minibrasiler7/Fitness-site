@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}FitRate{% endblock %}
+
+{% block content %}
+<!-- flash message -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+
+    {% for message in messages %}
+      {% if message == "You were successfully Register" %}
+        <p class="positive_flash">{{ message }}</p>
+      {% endif%}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<!-- end flash message -->
+
+<h1>Hello</h1>
+{% endblock %}
+

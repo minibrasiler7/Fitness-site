@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}FitRate{% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+
+    {% for message in messages %}
+        <p class="negative_flash">{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<div class="login_form">
+    <h1>Login form</h1>
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}
