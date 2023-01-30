@@ -7,7 +7,6 @@
 <!-- flash message -->
 {% with messages = get_flashed_messages() %}
   {% if messages %}
-
     {% for message in messages %}
       {% if message == "You were successfully Register" %}
         <p class="positive_flash">{{ message }}</p>
@@ -16,6 +15,9 @@
   {% endif %}
 {% endwith %}
 <!-- end flash message -->
+{% if current_user.is_authenticated %}
+  Hi {{ current_user.username }}!
+{% endif %}
 
 <h1>Hello</h1>
 {% endblock %}

@@ -1,12 +1,21 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from form import LoginForm, RegisterForm
+from form import LoginForm, RegisterForm, FitnessForm
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, logout_user
+
+login_manager = LoginManager()
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
 
 ##CREATE DATABASE
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
@@ -16,7 +25,7 @@ app.app_context().push()
 db = SQLAlchemy(app)
 
 ##CREATE TABLE
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(250), unique=True, nullable=False)
     username = db.Column(db.String(250), nullable=False)
@@ -42,6 +51,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user!= None:
             if check_password_hash(user.password, password):
+                login_user(user)
                 return redirect(url_for('home'))
             else:
                 flash("Sorry you password is not correct please try again...")
@@ -79,7 +89,13 @@ def register():
 
 @app.route("/log_out")
 def log_out():
-    return render_template("login.html")
+    logout_user()
+    return render_template("index.html")
+
+@app.route("/add")
+def add_new():
+    form = FitnessForm()
+    return render_template("add.html", form = form)
 
 
 

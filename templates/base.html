@@ -16,15 +16,24 @@
       <li class="nav-item active">
         <a class="nav-link" href={{url_for("home")}}>Home </a>
       </li>
-      <li class="nav-item">
+        {% if current_user.is_authenticated %}
+            <li class="nav-item">
+            <a class="nav-link" href={{url_for("add_new")}}>Add new Fitness</a>
+            </li>
+        {% endif %}
+        {% if not current_user.is_authenticated %}
+        <li class="nav-item">
         <a class="nav-link" href={{url_for("login")}}>Login</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href={{url_for("register")}}>Register</a>
       </li>
+        {% endif %}
+      {% if current_user.is_authenticated %}
       <li class="nav-item">
         <a class="nav-link" href={{url_for("log_out")}}>Log out</a>
       </li>
+        {% endif %}
     </ul>
   </div>
 </nav>
