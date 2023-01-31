@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FileField, SelectField, BooleanField, FloatField
-from wtforms.validators import DataRequired, Email
+from flask_wtf.file import FileAllowed
+from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField, FloatField
+from wtforms.validators import DataRequired, Email, URL
 import email_validator
 
 
@@ -18,11 +19,12 @@ class RegisterForm(FlaskForm):
 class FitnessForm(FlaskForm):
     fitness_name = StringField('Nom', validators=[DataRequired()])
     adresse = StringField('Adresse', validators=[DataRequired()])
-    photo_url = FileField('URL image du fitness', validators=[DataRequired()])
-    adresse_url = StringField("URL de l'adresse", validators=[DataRequired()])
-    note_equipement = SelectField("Equipement", choices=["Je ne souhaite pas donner mon avis", 'hello', '🏋🏋', "🏋🏋🏋", "🏋🏋🏋🏋", "🏋🏋🏋🏋🏋"])
+    photo = StringField("URL de l'image", validators=[DataRequired(), URL()])
+    adresse_url = StringField("URL de l'adresse", validators=[DataRequired(), URL()])
+    note_equipement = SelectField("Equipement", choices=["Je ne souhaite pas donner mon avis", '🏋', '🏋🏋', "🏋🏋🏋", "🏋🏋🏋🏋", "🏋🏋🏋🏋🏋"])
     note_personnel = SelectField("Personnel", choices=["Je ne souhaite pas donner mon avis", '🙋',"🙋🙋", "🙋🙋🙋", "🙋🙋🙋🙋", "🙋🙋🙋🙋🙋"])
     note_proprete = SelectField("Propreté", choices=["Je ne souhaite pas donner mon avis",'🧹', "🧹🧹", "🧹🧹🧹", "🧹🧹🧹🧹", "🧹🧹🧹🧹🧹"])
+    is_cours = BooleanField("Y'a t-il des cours ?", validators=[DataRequired()])
     note_cours = SelectField("Cours", choices=["Je ne souhaite pas donner mon avis", '💪', "💪💪", "💪💪💪", "💪💪💪💪", "💪💪💪💪💪"])
     is_spa = BooleanField("Y'a t-il une zone SPA ?", validators=[DataRequired()])
     note_spa = SelectField("Zone spa", choices=["Je ne souhaite pas donner mon avis",'🧖', "🧖‍🧖‍", "🧖‍🧖‍🧖‍", "🧖‍🧖‍🧖‍🧖‍", "🧖‍🧖‍🧖‍🧖‍🧖‍"])

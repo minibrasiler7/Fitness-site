@@ -3,7 +3,8 @@ from form import LoginForm, RegisterForm, FitnessForm
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, logout_user
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
+from note_method import *
 
 login_manager = LoginManager()
 
@@ -12,6 +13,8 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
 login_manager.init_app(app)
 
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
@@ -19,6 +22,8 @@ def load_user(user_id):
 
 ##CREATE DATABASE
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///fitness.db"
+
 #Optional: But it will silence the deprecation warning in the console.
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.app_context().push()
@@ -26,6 +31,7 @@ db = SQLAlchemy(app)
 
 ##CREATE TABLE
 class User(db.Model, UserMixin):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(250), unique=True, nullable=False)
     username = db.Column(db.String(250), nullable=False)
@@ -34,6 +40,33 @@ class User(db.Model, UserMixin):
     #Optional: this will allow each user object to be identified by its username when printed.
     def __repr__(self):
         return f'<User {self.username}>'
+
+class Fitness(db.Model):
+    __tablename__ = 'fitness'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    adresse = db.Column(db.String(250), nullable=False, unique=True)
+    ville= db.Column(db.String(250), nullable=False, unique=True)
+    url_image = db.Column(db.String(250), nullable=False)
+    adresse_url = db.Column(db.String(250), nullable=False)
+    note_equipement = db.Column(db.Float(250), nullable=False)
+    note_equipement_nombre = db.Column(db.Integer)
+    note_personnel = db.Column(db.Float(250))
+    note_personnel_nombre = db.Column(db.Integer)
+    note_proprete = db.Column(db.Float(250))
+    note_proprete_nombre = db.Column(db.Integer)
+    is_cours = db.Column(db.Boolean)
+    note_cours = db.Column(db.Float(250))
+    note_cours_nombre = db.Column(db.Integer)
+    is_spa = db.Column(db.Boolean)
+    note_spa = db.Column(db.Float(250))
+    note_spa_nombre = db.Column(db.Integer)
+    prix_mensuel = db.Column(db.Float(250))
+    note_general = db.Column(db.Float(250))
+
+    #Optional: this will allow each user object to be identified by its username when printed.
+    def __repr__(self):
+        return f'<Fitness {self.name}>'
 
 db.create_all()
 
@@ -92,12 +125,60 @@ def log_out():
     logout_user()
     return render_template("index.html")
 
-@app.route("/add")
+@app.route("/add", methods=["GET", "POST"])
+@login_required
 def add_new():
     form = FitnessForm()
+    if request.method == "POST":
+        name = request.form.get("fitness_name")
+        adresse = request.form.get("adresse").split(", ")[0]
+        ville = request.form.get("adresse").split(", ")[1]
+        url_image = request.form.get("photo")
+        adresse_url = request.form.get("adresse_url")
+        is_spa = boolean_reponse(request.form.get("is_spa"))
+        is_cours = boolean_reponse(request.form.get("is_cours"))
+        if is_spa:
+            note_spa = note_to_data(request.form.get("note_spa"))
+        if is_cours:
+            note_cours = note_to_data(request.form.get("note_cours"))
+        note_equipement = note_to_data(request.form.get("note_equipement"))
+        note_personnel = note_to_data(request.form.get("note_personnel"))
+        note_proprete = note_to_data(request.form.get("note_proprete"))
+        prix_mensuel = note_to_data(request.form.get("prix_mensuel"))
+        note_equipement_nombre = is_there_note(note_equipement)
+        note_personnel_nombre = is_there_note(note_personnel)
+        note_cours_nombre = is_there_note(note_cours)
+        note_proprete_nombre = is_there_note(note_proprete)
+        note_spa_nombre = is_there_note(note_spa)
+        note_general = moyenne([note_equipement, note_personnel, note_proprete, note_cours, note_spa])
+
+        fitness =Fitness(
+            name=name,
+            adresse=adresse,
+            ville = ville,
+            url_image=url_image,
+            adresse_url=adresse_url,
+            is_spa=is_spa,
+            is_cours=is_cours,
+            note_equipement = note_equipement,
+            note_equipement_nombre = note_equipement_nombre,
+            note_cours = note_cours,
+            note_cours_nombre = note_cours_nombre,
+            note_personnel = note_personnel,
+            note_personnel_nombre = note_personnel_nombre,
+            note_proprete = note_proprete,
+            note_proprete_nombre = note_proprete_nombre,
+            note_spa = note_spa,
+            note_spa_nombre = note_spa_nombre,
+            prix_mensuel = prix_mensuel,
+            note_general = note_general
+        )
+        db.session.add(fitness)
+        db.session.commit()
+        return redirect(url_for("home"))
+
+    form = FitnessForm()
     return render_template("add.html", form = form)
-
-
 
 
 if __name__ == "__main__":
