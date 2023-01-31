@@ -72,7 +72,8 @@ db.create_all()
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    fitness_tab = db.session.query(Fitness).all()
+    return render_template("index.html",fitness_tab = fitness_tab)
 
 
 @app.route("/login", methods=["GET","POST"])

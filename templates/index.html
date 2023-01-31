@@ -19,6 +19,23 @@
   Hi {{ current_user.username }}!
 {% endif %}
 
-<h1>Hello</h1>
+{% for fitness in fitness_tab %}
+
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src={{fitness.url_image}} alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{fitness.name}} ⭐️ {{fitness.note_general}}</h5>
+    <p class="card-text">{{fitness.adresse}}</p>
+    <p class="card-text">{{fitness.ville}}</p>
+    <p class="card-text"><a href={{fitness.adresse_url}}>Voir sur la carte</a></p>
+    {% if current_user.is_authenticated %}
+    <a href="#" class="btn btn-primary">+ d'info</a>
+    <a href="#" class="btn btn-danger">Commenter</a>
+    {% endif %}
+  </div>
+
+{% endfor %}
+
+
 {% endblock %}
 
