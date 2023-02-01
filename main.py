@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from form import LoginForm, RegisterForm, FitnessForm
+from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -124,8 +124,13 @@ def register():
 @app.route("/log_out")
 def log_out():
     logout_user()
-    return render_template("index.html")
+    return redirect(url_for("home"))
 
+@app.route("/info")
+def info():
+    id = request.args.get("id")
+    fitness = Fitness.query.filter_by(id=id).first()
+    return render_template("info.html", fitness=fitness)
 @app.route("/add", methods=["GET", "POST"])
 @login_required
 def add_new():
@@ -180,6 +185,13 @@ def add_new():
 
     form = FitnessForm()
     return render_template("add.html", form = form)
+
+@app.route("/commenter")
+def commenter():
+    id = request.args.get("id_fitness")
+    fitness = Fitness.query.filter_by(id=id).first()
+    form = CommentaireForm()
+    return render_template("commenter.html", fitness=fitness, form = form)
 
 
 if __name__ == "__main__":

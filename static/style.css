@@ -1,5 +1,5 @@
-.login_form{
-    padding: 20%;
+.form{
+    padding: 5% 20%;
     }
 .positive_flash{
     margin: auto;
@@ -8,5 +8,9 @@
 .negative_flash{
     margin: auto;
     color:red;
-
+}
+.card{
+    padding:0px;
+    margin-left: 10px;
+    margin-right:10px;
 }

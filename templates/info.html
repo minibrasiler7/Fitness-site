@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}FitRate{% endblock %}
+
+{% block content %}
+<img src={{fitness.url_image}} alt="image du fitness">
+<table>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Catégories</th>
+      <th scope="col">Existe?</th>
+      <th scope="col">Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Equipements</th>
+      <td>✅</td>
+      <td>{{fitness.note_equipement}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Personnel</th>
+      <td>✅</td>
+      <td>{{fitness.note_personnel}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Cours</th>
+      {% if fitness.is_cours%}
+      <td>✅</td>
+      {% else %}
+      <td>❌</td>
+      {% endif%}
+      {% if fitness.is_cours%}
+      <td>{{fitness.note_cours}}</td>
+      {% else %}
+      <td>Pas de cours</td>
+      {% endif%}
+    </tr>
+    <tr>
+      <th scope="row">SPA</th>
+      {% if fitness.is_spa%}
+      <td>✅</td>
+      {% else %}
+      <td>❌</td>
+      {% endif%}
+      {% if fitness.is_spa%}
+      <td>{{fitness.note_spa}}</td>
+      {% else %}
+      <td>Pas de cours</td>
+      {% endif%}
+    </tr>
+    <tr>
+      <th scope="row">Propreté</th>
+      <td> N/A</td>
+      <td>{{fitness.note_proprete}}</td>
+    </tr>
+  </tbody>
+</table>
+</table>
+
+{% endblock %}

@@ -31,3 +31,12 @@ class FitnessForm(FlaskForm):
     prix_mensuel = FloatField("Prix mensuel moyen pour un accès complet", validators=[DataRequired()])
     submit = SubmitField('Register')
 
+class CommentaireForm(FlaskForm):
+     note_equipement = SelectField("Equipement", choices=["Je ne souhaite pas donner mon avis", '🏋', '🏋🏋', "🏋🏋🏋", "🏋🏋🏋🏋", "🏋🏋🏋🏋🏋"])
+     note_personnel = SelectField("Personnel", choices=["Je ne souhaite pas donner mon avis", '🙋',"🙋🙋", "🙋🙋🙋", "🙋🙋🙋🙋", "🙋🙋🙋🙋🙋"])
+     note_proprete = SelectField("Propreté", choices=["Je ne souhaite pas donner mon avis",'🧹', "🧹🧹", "🧹🧹🧹", "🧹🧹🧹🧹", "🧹🧹🧹🧹🧹"])
+     note_cours = SelectField("Cours", choices=["Je ne souhaite pas donner mon avis", '💪', "💪💪", "💪💪💪", "💪💪💪💪", "💪💪💪💪💪"])
+     note_spa = SelectField("Zone spa", choices=["Je ne souhaite pas donner mon avis",'🧖', "🧖‍🧖‍", "🧖‍🧖‍🧖‍", "🧖‍🧖‍🧖‍🧖‍", "🧖‍🧖‍🧖‍🧖‍🧖‍"])
+     submit = SubmitField('Noter')
+
+
