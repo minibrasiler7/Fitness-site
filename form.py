@@ -37,6 +37,7 @@ class CommentaireForm(FlaskForm):
      note_proprete = SelectField("Propreté", choices=["Je ne souhaite pas donner mon avis",'🧹', "🧹🧹", "🧹🧹🧹", "🧹🧹🧹🧹", "🧹🧹🧹🧹🧹"])
      note_cours = SelectField("Cours", choices=["Je ne souhaite pas donner mon avis", '💪', "💪💪", "💪💪💪", "💪💪💪💪", "💪💪💪💪💪"])
      note_spa = SelectField("Zone spa", choices=["Je ne souhaite pas donner mon avis",'🧖', "🧖‍🧖‍", "🧖‍🧖‍🧖‍", "🧖‍🧖‍🧖‍🧖‍", "🧖‍🧖‍🧖‍🧖‍🧖‍"])
-     submit = SubmitField('Noter')
+     commenter = SubmitField('Register')
+
 
 

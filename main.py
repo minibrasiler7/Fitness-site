@@ -1,3 +1,4 @@
+import flask_login
 from flask import Flask, render_template, request, redirect, url_for, flash
 from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm
 from flask_bootstrap import Bootstrap
@@ -5,6 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
 from note_method import *
+from flask_ckeditor import CKEditor
+import datetime
 
 login_manager = LoginManager()
 
@@ -12,7 +15,7 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
 login_manager.init_app(app)
-
+ckeditor = CKEditor(app)
 
 
 @login_manager.user_loader
@@ -63,10 +66,21 @@ class Fitness(db.Model):
     note_spa_nombre = db.Column(db.Integer)
     prix_mensuel = db.Column(db.Float(250))
     note_general = db.Column(db.Float(250))
+    note_general_nombre = db.Column(db.Float(250))
 
     #Optional: this will allow each user object to be identified by its username when printed.
     def __repr__(self):
         return f'<Fitness {self.name}>'
+
+class Commentaire(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    id_fitness = db.Column(db.Integer, nullable=False)
+    id_user = db.Column(db.Integer, nullable= False)
+    name_user = db.Column(db.String(250), nullable=False)
+    name_fitness= db.Column(db.String(250), nullable=False)
+    commentaire = db.Column(db.String(450), nullable=False)
+    date = db.Column(db.String(450), nullable=False)
 
 db.create_all()
 
@@ -186,11 +200,54 @@ def add_new():
     form = FitnessForm()
     return render_template("add.html", form = form)
 
-@app.route("/commenter")
+@app.route("/commenter", methods = ["GET", "POST"])
 def commenter():
     id = request.args.get("id_fitness")
     fitness = Fitness.query.filter_by(id=id).first()
     form = CommentaireForm()
+    if request.method == "POST":
+        commentaire = request.form.get("ckeditor")[3:-4]
+        id_fitness = id
+        name_fitness = fitness.name
+        user_id = flask_login.current_user.id
+        user_name = flask_login.current_user.username
+        date = datetime.datetime.now()
+        if date.day <10:
+            jour = f"0{date.day}"
+        else:
+            jour = date.day
+        if date.month <10:
+            mois = f"0{date.month}"
+        else:
+            mois = date.month
+        year = date.year
+        date_reformated = f"{jour}/{mois}/{year}"
+        if len(commentaire)>0:
+            comment = Commentaire(
+                id_fitness=id_fitness,
+                name_fitness=name_fitness,
+                id_user=user_id,
+                name_user =user_name,
+                commentaire=commentaire,
+                date = date_reformated
+            )
+            db.session.add(comment)
+            db.session.commit()
+            flash("Félicitation votre commentaire a été enregistré!")
+        note_equipement = note_to_data(request.form.get("note_equipement"))
+        note_personnel = request.form.get("note_personnel")
+        note_proprete = request.form.get("note_proprete")
+        if fitness.is_spa:
+            note_spa = note_to_data(request.form.get("note_spa"))
+        if fitness.is_cours:
+            note_cours = note_to_data(request.form.get("note_cours"))
+
+
+
+
+        return redirect(url_for('home'))
+
+
     return render_template("commenter.html", fitness=fitness, form = form)
 
 

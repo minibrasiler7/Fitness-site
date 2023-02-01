@@ -11,6 +11,9 @@
       {% if message == "You were successfully Register" %}
         <p class="positive_flash">{{ message }}</p>
       {% endif%}
+    {% if message == "Félicitation votre commentaire a été enregistré!" %}
+        <p class="positive_flash">{{ message }}</p>
+      {% endif%}
     {% endfor %}
   {% endif %}
 {% endwith %}

@@ -6,9 +6,20 @@
 
 {% block content %}
 
-<div class="form">
-    <h1>Noter le fitness : {{fitness.name}}</h1>
-    <h2>{{fitness.ville}}, {{fitness.adresse}}</h2>
-    {{ wtf.quick_form(form) }}
-</div>
+    <div class="form">
+        <h1>Noter le fitness : {{fitness.name}}</h1>
+        <h2>{{fitness.ville}}, {{fitness.adresse}}</h2>
+        <form class="form form-horizontal" method="post" role="form">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+        {{ wtf.form_field(form.note_equipement) }}
+        {{ wtf.form_field(form.note_personnel) }}
+        {{ wtf.form_field(form.note_proprete) }}
+        {{ wtf.form_field(form.note_cours) }}
+        {{ wtf.form_field(form.note_spa) }}
+        {{ ckeditor.load(pkg_type="basic") }}
+        {{ ckeditor.create() }}
+        {{ wtf.form_field(form.commenter) }}
+        </form>
+    </div>
 {% endblock %}
