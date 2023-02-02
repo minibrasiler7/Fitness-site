@@ -2,8 +2,13 @@
 {% block title %}FitRate{% endblock %}
 
 {% block content %}
-<img src={{fitness.url_image}} alt="image du fitness">
-<table>
+<div class="img_container">
+  <img src={{fitness.url_image}} class="img_fitness_info" alt="image du fitness">
+</div>
+  <h2>{{fitness.name}}</h2>
+  <h3>{{fitness.ville}}, {{fitness.adresse}}</h3>
+  <h4><a href={{fitness.adresse_url}}> Voir sur google maps</a></h4>
+
     <table class="table">
   <thead>
     <tr>
@@ -56,6 +61,21 @@
     </tr>
   </tbody>
 </table>
-</table>
+<h2>Commentaires</h2>
+
+{% for commentaire in commentaires %}
+<div class="card">
+  <div class="card-header">
+    {{commentaire.name_user}}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{commentaire.commentaire}}</h5>
+    <p class="card-text">{{commentaire.date}}</p>
+  </div>
+</div>
+
+
+
+{% endfor %}
 
 {% endblock %}

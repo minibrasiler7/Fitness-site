@@ -144,7 +144,8 @@ def log_out():
 def info():
     id = request.args.get("id")
     fitness = Fitness.query.filter_by(id=id).first()
-    return render_template("info.html", fitness=fitness)
+    commentaires = Commentaire.query.filter_by(id_fitness=fitness.id)
+    return render_template("info.html", fitness=fitness, commentaires = commentaires)
 @app.route("/add", methods=["GET", "POST"])
 @login_required
 def add_new():
@@ -157,8 +158,11 @@ def add_new():
         adresse_url = request.form.get("adresse_url")
         is_spa = boolean_reponse(request.form.get("is_spa"))
         is_cours = boolean_reponse(request.form.get("is_cours"))
+        note_spa=None
+        note_cours = None
         if is_spa:
             note_spa = note_to_data(request.form.get("note_spa"))
+            print(note_spa)
         if is_cours:
             note_cours = note_to_data(request.form.get("note_cours"))
         note_equipement = note_to_data(request.form.get("note_equipement"))
@@ -171,8 +175,9 @@ def add_new():
         note_proprete_nombre = is_there_note(note_proprete)
         note_spa_nombre = is_there_note(note_spa)
         note_general = moyenne([note_equipement, note_personnel, note_proprete, note_cours, note_spa])
+        note_general_nombre= is_there_note(note_general)
 
-        fitness =Fitness(
+        fitness = Fitness(
             name=name,
             adresse=adresse,
             ville = ville,
@@ -191,7 +196,8 @@ def add_new():
             note_spa = note_spa,
             note_spa_nombre = note_spa_nombre,
             prix_mensuel = prix_mensuel,
-            note_general = note_general
+            note_general = note_general,
+            note_general_nombre = note_general_nombre
         )
         db.session.add(fitness)
         db.session.commit()
@@ -235,15 +241,45 @@ def commenter():
             db.session.commit()
             flash("Félicitation votre commentaire a été enregistré!")
         note_equipement = note_to_data(request.form.get("note_equipement"))
-        note_personnel = request.form.get("note_personnel")
-        note_proprete = request.form.get("note_proprete")
+        note_personnel = note_to_data(request.form.get("note_personnel"))
+        note_proprete = note_to_data(request.form.get("note_proprete"))
+        note_spa=None
         if fitness.is_spa:
             note_spa = note_to_data(request.form.get("note_spa"))
+        note_cours =None
         if fitness.is_cours:
             note_cours = note_to_data(request.form.get("note_cours"))
+        new_notes = {"note_equipement": note_equipement,
+                     "note_personnel": note_personnel,
+                     "note_proprete": note_proprete,
+                     "note_spa": note_spa,
+                     "note_cours":note_cours}
+        old_notes = {"note_equipement": [fitness.note_equipement, fitness.note_equipement_nombre],
+                     "note_personnel": [fitness.note_personnel, fitness.note_personnel_nombre],
+                     "note_proprete": [fitness.note_proprete, fitness.note_proprete_nombre],
+                     "note_spa": [fitness.note_spa, fitness.note_spa_nombre],
+                     "note_cours": [fitness.note_cours, fitness.note_cours_nombre]}
 
+        print(new_notes)
+        print(old_notes)
+        averages_notes = update_moyenne(old_notes,new_notes)
+        averages_notes_tab = [item[0] for (key,item) in averages_notes.items()]
+        print(averages_notes_tab)
 
-
+        if note_equipement!=None or note_cours!=None or note_spa!=None or note_personnel!=None or note_proprete!=None:
+            fitness.note_general_nombre += 1
+            fitness.note_equipement = averages_notes['note_equipement'][0]
+            fitness.note_equipement_nombre = averages_notes['note_equipement'][1]
+            fitness.note_personnel = averages_notes['note_personnel'][0]
+            fitness.note_personnel_nombre= averages_notes['note_personnel'][1]
+            fitness.note_proprete = averages_notes['note_proprete'][0]
+            fitness.note_proprete_nombre= averages_notes['note_proprete'][1]
+            fitness.note_spa = averages_notes['note_spa'][0]
+            fitness.note_spa_nombre= averages_notes['note_spa'][1]
+            fitness.note_cours = averages_notes['note_cours'][0]
+            fitness.note_cours_nombre= averages_notes['note_cours'][1]
+            fitness.note_general= moyenne(averages_notes_tab)
+            db.session.commit()
 
         return redirect(url_for('home'))
 

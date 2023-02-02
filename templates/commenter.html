@@ -15,8 +15,12 @@
         {{ wtf.form_field(form.note_equipement) }}
         {{ wtf.form_field(form.note_personnel) }}
         {{ wtf.form_field(form.note_proprete) }}
-        {{ wtf.form_field(form.note_cours) }}
+        {% if fitness.is_spa %}
         {{ wtf.form_field(form.note_spa) }}
+        {% endif %}
+        {% if fitness.is_cours %}
+        {{ wtf.form_field(form.note_cours) }}
+        {% endif %}
         {{ ckeditor.load(pkg_type="basic") }}
         {{ ckeditor.create() }}
         {{ wtf.form_field(form.commenter) }}
