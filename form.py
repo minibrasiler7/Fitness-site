@@ -27,7 +27,7 @@ class FitnessForm(FlaskForm):
     is_cours = BooleanField("Y'a t-il des cours ?")
     note_cours = SelectField("Cours", choices=["Je ne souhaite pas donner mon avis", '💪', "💪💪", "💪💪💪", "💪💪💪💪", "💪💪💪💪💪"])
     is_spa = BooleanField("Y'a t-il une zone SPA ?")
-    note_spa = SelectField("Zone spa", choices=["Je ne souhaite pas donner mon avis",'🧖', "🧖‍🧖‍", "🧖‍🧖‍🧖‍", "🧖‍🧖‍🧖‍🧖‍", "🧖‍🧖‍🧖‍🧖‍🧖‍"])
+    note_spa = SelectField("Zone spa", choices=["Je ne souhaite pas donner mon avis","💆", "💆💆", "💆💆💆", "💆💆💆💆", "💆💆💆💆💆"])
     prix_mensuel = FloatField("Prix mensuel moyen pour un accès complet", validators=[DataRequired()])
     submit = SubmitField('Register')
 

@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-
 {% block title %}FitRate{% endblock %}
 
 {% block content %}
@@ -19,29 +18,57 @@
 {% endwith %}
 <!-- end flash message -->
 {% if current_user.is_authenticated %}
-  Hi {{ current_user.username }}!
+  <p>Hi {{ current_user.username }}!</p>
 {% endif %}
 
-  <div class="container-fluid">
-  <div class="row">
-{% for fitness in fitness_tab %}
-    <div class="card col-sm-4" style="width: 18rem;">
-    <img class="card-img-top" src={{fitness.url_image}} alt="Card image cap">
-    <div class="card-body">
-      <h5 class="card-title">{{fitness.name}} ⭐️ {{fitness.note_general}} ({{fitness.note_general_nombre|int}} avis)</h5>
-      <p class="card-text">{{fitness.adresse}}</p>
-      <p class="card-text">{{fitness.ville}}</p>
-      <p class="card-text"><a href={{fitness.adresse_url}}>Voir sur la carte</a></p>
+<div class="container-fluid header">
+<div class="titre row">
+    <img src="static/muscle_logo.png" class="homme_mucle_img col-sm-6 col-md-5 col-lg-4" alt="">
+    <div class="slogan col-sm-6 col-md-5 col-lg-4">
+    <h1>Trouve le meilleur FITNESS</h1>
+    <h3>Gagne du temps grâce à nos avis!  Choisis le fitness qui te correspond le mieux !</h3>
+    <div class="search-container">
+  <form action="#" class="search-form">
+    <input type="text" class="text_input" placeholder="Rechercher...">
+    <button type="submit" class="text_submit">Rechercher</button>
+  </form>
+</div>
+</div>
+    </div>
+</div>
+</div>
 
-      <a href={{url_for('info', id = fitness.id)}} class="btn btn-primary">+ d'info</a>
-        {% if current_user.is_authenticated %}
-      <a href={{url_for('commenter', id_fitness = fitness.id)}} class="btn btn-danger">Commenter/Noter</a>
-        {% endif %}
-    </div>
-    </div>
+  <div class="container-fluid list-fitness">
+    <h2 class="titre-list">Tous les fitness répertoriés</h2>
+
+{% for fitness in fitness_tab %}
+      <div class="container-fluid presentation-fitness">
+          <div class="row">
+              <img class="col-sm-4 img-banniere" src={{fitness.url_image}} alt="Card image cap">
+              <div class="banniere-fitness col-sm-4">
+               <h4 class="fitness-name">{{fitness.name}}</h4>
+               <p class="">{{fitness.adresse}}</p>
+               <p class="">{{fitness.ville}}</p>
+               <p class=""><a href={{fitness.adresse_url}}>Voir sur la google map</a></p>
+               <h6>⭐️ {{fitness.note_general}} {{appreciation(fitness.note_general)}} ({{fitness.note_general_nombre|int}} avis)</h6>
+               </div>
+              <div class="bouton-fitness col-sm-4">
+                  <h2 class="prix_index">{{fitness.prix_mensuel}} <span class="francs_index">Frs/mois</span></h2>
+                  <div class="boutons-ensemble">
+                <a href={{url_for('info', id = fitness.id)}} class="btn btn-primary">+ d'info</a>
+                {% if current_user.is_authenticated %}
+                <a href={{url_for('commenter', id_fitness = fitness.id)}} class="btn btn-danger">Commenter/Noter</a>
+                {% endif %}
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+
 {% endfor %}
   </div>
-  </div>
+
 
 
 {% endblock %}

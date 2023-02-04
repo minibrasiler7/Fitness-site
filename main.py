@@ -87,8 +87,7 @@ db.create_all()
 @app.route("/")
 def home():
     fitness_tab = db.session.query(Fitness).all()
-    return render_template("index.html",fitness_tab = fitness_tab)
-
+    return render_template("index.html",fitness_tab = fitness_tab, appreciation=appreciation)
 
 @app.route("/login", methods=["GET","POST"])
 def login():
@@ -168,7 +167,7 @@ def add_new():
         note_equipement = note_to_data(request.form.get("note_equipement"))
         note_personnel = note_to_data(request.form.get("note_personnel"))
         note_proprete = note_to_data(request.form.get("note_proprete"))
-        prix_mensuel = note_to_data(request.form.get("prix_mensuel"))
+        prix_mensuel = float(request.form.get("prix_mensuel"))
         note_equipement_nombre = is_there_note(note_equipement)
         note_personnel_nombre = is_there_note(note_personnel)
         note_cours_nombre = is_there_note(note_cours)

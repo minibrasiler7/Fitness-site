@@ -40,4 +40,18 @@ def update_moyenne(old_note, new_note):
 
     return old_note
 
+def appreciation(note):
+    if note<2:
+        return "À éviter"
+    elif note <3:
+        return "Mauvais"
+    elif note <3.5:
+        return "Moyen"
+    elif note <4:
+        return "Bien"
+    elif note<4.5:
+        return "Très bien"
+    else:
+        return "Excellent"
+
 

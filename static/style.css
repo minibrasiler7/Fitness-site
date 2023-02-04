@@ -1,28 +1,167 @@
 .form{
-    padding: 5% 20%;
+    padding: 15% 20%;
     }
 .positive_flash{
+    position:absolute;
+    top:150px;
     margin: auto;
     color: green;
 }
+
 .negative_flash{
+    position:absolute;
+    top:150px;
     margin: auto;
     color:red;
 }
-.card{
-    padding:0px;
-    margin-left: 10px;
-    margin-right:10px;
-}
+
 
 .img_fitness_info{
     height: 100%;
-    border-radius:5%;
-
 }
+
 .img_container{
     float:left;
     width: 120px;
     height: 120px;
     overflow: hidden;
 }
+
+a{
+    text-decoration:none;
+    color:#ff5757;
+}
+
+.custom_nav{
+    z-index:2;
+    background-color:white;
+    width:100%;
+    position:fixed;
+    margin-bottom:10%;
+}
+.logo{
+    width:90px;
+    margin-left:50px;
+}
+.titre{
+padding-top:15%;
+color:white;
+background-color:#ff5757;
+}
+h1{
+    margin-bottom:10%;
+}
+
+
+.header{
+    background-color:#ff5757;
+    margin:0;
+}
+.slogan{
+    text-align:center;
+    font-family: 'Nunito', sans-serif;
+    margin-left:15%;
+}
+.list-fitness{
+    background-color: white;
+}
+.titre-list{
+     text-align:center;
+     font-family: 'Nunito', sans-serif;
+     margin-top: 5%;
+     margin-bottom: 5%;
+}
+.presentation-fitness{
+    border: solid black 1px;
+    -webkit-box-shadow: 2px 8px 8px -6px rgba(0,0,0,0.67), 2px 8px 8px -6px rgba(0,0,0,0.67);
+    box-shadow: 2px 8px 8px -6px rgba(0,0,0,0.67), 2px 8px 8px -6px rgba(0,0,0,0.67);
+}
+
+
+.search-container {
+  margin-top:5%;
+  margin-bottom:5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background-color: #ff5757;
+  border-radius: 25px;
+}
+
+.search-form{
+  display: flex;
+}
+
+.text_input {
+  width: 70%;
+  padding: 10px;
+  border: none;
+  border-radius: 25px 0 0 25px;
+  font-size: 16px;
+}
+
+.text_submit {
+  width: 40%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 0 25px 25px 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+.presentation-fitness{
+    height:250px;
+    padding-left:0px;
+    margin-bottom:50px;
+}
+.img-banniere{
+    height:250px;
+}
+.fitness-name{
+    font-family: 'Nunito', sans-serif;
+    color:#ff5757;
+
+}
+.banniere-fitness{
+    padding-top: 20px;
+}
+
+button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+#footer{
+
+    color:white;
+    text-align:center;
+    height: 200px;
+    background-color:#34495e;
+}
+
+
+form{
+    padding:0px !important;
+}
+
+.footer-mention{
+    padding:5%;
+}
+.bouton-fitness{
+    position:relative;
+}
+.boutons-ensemble{
+    position:absolute;
+    bottom:30px;
+    right:30px;
+}
+.prix_index{
+    position:absolute;
+    left:30%;
+    top: 5%;
+    font-family: 'Nunito', sans-serif;
+}
+.francs_index{
+    font-size:1.1rem;
+}
+
