@@ -56,6 +56,8 @@ class Fitness(db.Model):
     note_equipement_nombre = db.Column(db.Integer)
     note_personnel = db.Column(db.Float(250))
     note_personnel_nombre = db.Column(db.Integer)
+    note_piscine = db.Column(db.Float(250))
+    note_piscine_nombre = db.Column(db.Integer)
     note_proprete = db.Column(db.Float(250))
     note_proprete_nombre = db.Column(db.Integer)
     is_cours = db.Column(db.Boolean)
@@ -157,6 +159,8 @@ def add_new():
         adresse_url = request.form.get("adresse_url")
         is_spa = boolean_reponse(request.form.get("is_spa"))
         is_cours = boolean_reponse(request.form.get("is_cours"))
+        is_piscine = boolean_reponse(request.form.get("is_piscine"))
+        note_piscine = None
         note_spa=None
         note_cours = None
         if is_spa:
@@ -164,13 +168,17 @@ def add_new():
             print(note_spa)
         if is_cours:
             note_cours = note_to_data(request.form.get("note_cours"))
+        if is_piscine:
+            note_piscine = note_to_data(request.form.get("note_piscine"))
         note_equipement = note_to_data(request.form.get("note_equipement"))
+        note_piscine = note_to_data(request.form.get("note_piscine"))
         note_personnel = note_to_data(request.form.get("note_personnel"))
         note_proprete = note_to_data(request.form.get("note_proprete"))
         prix_mensuel = float(request.form.get("prix_mensuel"))
         note_equipement_nombre = is_there_note(note_equipement)
         note_personnel_nombre = is_there_note(note_personnel)
         note_cours_nombre = is_there_note(note_cours)
+        note_piscine_nombre = is_there_note(note_piscine)
         note_proprete_nombre = is_there_note(note_proprete)
         note_spa_nombre = is_there_note(note_spa)
         note_general = moyenne([note_equipement, note_personnel, note_proprete, note_cours, note_spa])
@@ -193,6 +201,8 @@ def add_new():
             note_proprete = note_proprete,
             note_proprete_nombre = note_proprete_nombre,
             note_spa = note_spa,
+            note_piscine=note_piscine,
+            note_piscine_nombre=note_piscine_nombre,
             note_spa_nombre = note_spa_nombre,
             prix_mensuel = prix_mensuel,
             note_general = note_general,

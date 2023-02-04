@@ -2,13 +2,14 @@
 {% block title %}FitRate{% endblock %}
 
 {% block content %}
+<div class="header_info">
 <div class="img_container">
   <img src={{fitness.url_image}} class="img_fitness_info" alt="image du fitness">
 </div>
   <h2>{{fitness.name}}</h2>
   <h3>{{fitness.ville}}, {{fitness.adresse}}</h3>
   <h4><a href={{fitness.adresse_url}}> Voir sur google maps</a></h4>
-
+</div>
     <table class="table">
   <thead>
     <tr>
@@ -42,7 +43,7 @@
       {% endif%}
     </tr>
     <tr>
-      <th scope="row">SPA</th>
+      <th scope="row">SPA (hammam/sauna)</th>
       {% if fitness.is_spa%}
       <td>✅</td>
       {% else %}
@@ -58,6 +59,19 @@
       <th scope="row">Propreté</th>
       <td> N/A</td>
       <td>{{fitness.note_proprete}}</td>
+    </tr>
+    <tr>
+      <th scope="row">Piscine</th>
+      {% if fitness.is_piscine%}
+      <td>✅</td>
+      {% else %}
+      <td>❌</td>
+      {% endif%}
+      {% if fitness.is_piscine%}
+      <td>{{fitness.note_piscine}}</td>
+      {% else %}
+      <td>Pas de piscine</td>
+      {% endif%}
     </tr>
   </tbody>
 </table>

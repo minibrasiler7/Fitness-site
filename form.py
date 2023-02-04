@@ -28,6 +28,8 @@ class FitnessForm(FlaskForm):
     note_cours = SelectField("Cours", choices=["Je ne souhaite pas donner mon avis", '💪', "💪💪", "💪💪💪", "💪💪💪💪", "💪💪💪💪💪"])
     is_spa = BooleanField("Y'a t-il une zone SPA ?")
     note_spa = SelectField("Zone spa", choices=["Je ne souhaite pas donner mon avis","💆", "💆💆", "💆💆💆", "💆💆💆💆", "💆💆💆💆💆"])
+    is_piscine = BooleanField("Y'a t-il une piscine?")
+    note_piscine = SelectField("Piscine", choices=["Je ne souhaite pas donner mon avis", '🏊', "🏊🏊", "🏊🏊🏊", "🏊🏊🏊🏊", "🏊🏊🏊🏊🏊"])
     prix_mensuel = FloatField("Prix mensuel moyen pour un accès complet", validators=[DataRequired()])
     submit = SubmitField('Register')
 
@@ -37,6 +39,7 @@ class CommentaireForm(FlaskForm):
      note_proprete = SelectField("Propreté", choices=["Je ne souhaite pas donner mon avis",'🧹', "🧹🧹", "🧹🧹🧹", "🧹🧹🧹🧹", "🧹🧹🧹🧹🧹"])
      note_cours = SelectField("Cours", choices=["Je ne souhaite pas donner mon avis", '💪', "💪💪", "💪💪💪", "💪💪💪💪", "💪💪💪💪💪"])
      note_spa = SelectField("Zone spa", choices=["Je ne souhaite pas donner mon avis","💆", "💆💆", "💆💆💆", "💆💆💆💆", "💆💆💆💆💆"])
+     note_piscine = SelectField("Piscine", choices=["Je ne souhaite pas donner mon avis", '🏊', "🏊🏊", "🏊🏊🏊", "🏊🏊🏊🏊", "🏊🏊🏊🏊🏊"])
      commenter = SubmitField('Register')
 
 

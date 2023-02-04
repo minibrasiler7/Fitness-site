@@ -64,6 +64,8 @@ h1{
 }
 .list-fitness{
     background-color: white;
+    margin-bottom:5%;
+
 }
 .titre-list{
      text-align:center;
@@ -132,13 +134,20 @@ button[type="submit"]:hover {
   background-color: #3e8e41;
 }
 #footer{
-
     color:white;
     text-align:center;
-    height: 200px;
+    height: auto;
     background-color:#34495e;
-}
+    width:100%;
 
+}
+body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
 form{
     padding:0px !important;
@@ -163,5 +172,8 @@ form{
 }
 .francs_index{
     font-size:1.1rem;
+}
+.header_info{
+padding-top:12%;
 }
 
