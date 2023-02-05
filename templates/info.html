@@ -2,16 +2,50 @@
 {% block title %}FitRate{% endblock %}
 
 {% block content %}
-<div class="header_info">
-<div class="img_container">
+<div class="header_info row">
+<div class="img_container col-md-2">
   <img src={{fitness.url_image}} class="img_fitness_info" alt="image du fitness">
 </div>
-  <div class="header_info_text">
+  <div class="header_info_text col-md-4">
   <h2>{{fitness.name}}</h2>
   <h3>{{fitness.ville}}, {{fitness.adresse}}</h3>
   <h4><a href={{fitness.adresse_url}}> Voir sur google maps</a></h4>
   <h4><a href={{fitness.site_url}}> Voir leur site</a></h4>
   </div>
+  <div class="horaires col-md-5">
+    <h2 class="horaires_titre">Horaire d'ouverture</h2>
+    <table class="horaires_table">
+      <tr>
+        <th>Lundi</th>
+        <td>{{fitness.lundi_ouverture}}</td>
+      </tr>
+      <tr>
+        <th>Mardi</th>
+        <td>{{fitness.mardi_ouverture}}</td>
+      </tr>
+      <tr>
+        <th>Mercredi</th>
+        <td>{{fitness.mercredi_ouverture}}</td>
+      </tr>
+      <tr>
+        <th>Jeudi</th>
+        <td>{{fitness.jeudi_ouverture}}</td>
+      </tr>
+      <tr>
+        <th>Vendredi</th>
+        <td>{{fitness.vendredi_ouverture}}</td>
+      </tr>
+      <tr>
+        <th>Samedi</th>
+        <td>{{fitness.samedi_ouverture}}</td>
+      </tr>
+      <tr>
+        <th>Dimanche</th>
+        <td>{{fitness.dimanche_ouverture}}</td>
+      </tr>
+    </table>
+  </div>
+
 </div>
     <table class="table">
   <thead>

@@ -71,6 +71,13 @@ class Fitness(db.Model):
     prix_mensuel = db.Column(db.Float(250))
     note_general = db.Column(db.Float(250))
     note_general_nombre = db.Column(db.Float(250))
+    lundi_ouverture = db.Column(db.String(250), nullable=False)
+    mardi_ouverture = db.Column(db.String(250), nullable=False)
+    mercredi_ouverture = db.Column(db.String(250), nullable=False)
+    jeudi_ouverture = db.Column(db.String(250), nullable=False)
+    vendredi_ouverture = db.Column(db.String(250), nullable=False)
+    samedi_ouverture = db.Column(db.String(250), nullable=False)
+    dimanche_ouverture = db.Column(db.String(250), nullable=False)
 
     #Optional: this will allow each user object to be identified by its username when printed.
     def __repr__(self):
@@ -87,6 +94,12 @@ class Commentaire(db.Model):
     date = db.Column(db.String(450), nullable=False)
 
 db.create_all()
+
+def jours_horaire(jour_debut, jour_fin):
+    if jour_debut=="fermé" or jour_fin=="24/24":
+        return jour_debut
+    else:
+        return f"{jour_debut} - {jour_fin}"
 
 @app.route("/")
 def home():
@@ -187,6 +200,15 @@ def add_new():
         note_general = moyenne([note_equipement, note_personnel, note_proprete, note_cours, note_spa])
         note_general_nombre= is_there_note(note_general)
 
+        lundi_ouverture = jours_horaire(request.form.get("lundi_ouverture"),request.form.get("lundi_fermeture"))
+        mardi_ouverture = jours_horaire(request.form.get("mardi_ouverture"),request.form.get("mardi_fermeture"))
+        mercredi_ouverture = jours_horaire(request.form.get("mercredi_ouverture"),request.form.get("mercredi_fermeture"))
+        jeudi_ouverture = jours_horaire(request.form.get("jeudi_ouverture"),request.form.get("jeudi_fermeture"))
+        vendredi_ouverture = jours_horaire(request.form.get("vendredi_ouverture"),request.form.get("vendredi_fermeture"))
+        samedi_ouverture = jours_horaire(request.form.get("samedi_ouverture"),request.form.get("samedi_fermeture"))
+        dimanche_ouverture = jours_horaire(request.form.get("dimanche_ouverture"),request.form.get("dimanche_fermeture"))
+
+
         fitness = Fitness(
             name=name,
             adresse=adresse,
@@ -210,8 +232,14 @@ def add_new():
             note_spa_nombre = note_spa_nombre,
             prix_mensuel = prix_mensuel,
             note_general = note_general,
-            note_general_nombre = note_general_nombre
-
+            note_general_nombre = note_general_nombre,
+            lundi_ouverture = lundi_ouverture,
+            mardi_ouverture = mardi_ouverture,
+            mercredi_ouverture = mercredi_ouverture,
+            jeudi_ouverture = jeudi_ouverture,
+            vendredi_ouverture = vendredi_ouverture,
+            samedi_ouverture = samedi_ouverture,
+            dimanche_ouverture = dimanche_ouverture
         )
         db.session.add(fitness)
         db.session.commit()

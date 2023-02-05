@@ -21,7 +21,7 @@
 }
 
 .img_container{
-    float:left;
+
     width: 200px;
     height: 180px;
     overflow: hidden;
@@ -33,7 +33,6 @@ a{
 }
 
 .header_info_text{
-    margin-left:300px;
     font-family: 'Nunito', sans-serif;
 }
 
@@ -207,5 +206,15 @@ margin:auto;
 .titre_commentaires{
     font-family: 'Nunito', sans-serif;
 }
+.horaires{
+   padding-left:8%;
+   padding-top : 2%;
+   padding-bottom:2%;
+   border: 3px solid black;
+   border-radius: 5px;
+
+}
+
+
 
 
