@@ -8,6 +8,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from note_method import *
 from flask_ckeditor import CKEditor
 import datetime
+from html import unescape
 
 login_manager = LoginManager()
 
@@ -49,6 +50,7 @@ class Fitness(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
     adresse = db.Column(db.String(250), nullable=False, unique=True)
+    site_url = db.Column(db.String(250), nullable=False, unique=True)
     ville= db.Column(db.String(250), nullable=False, unique=True)
     url_image = db.Column(db.String(250), nullable=False)
     adresse_url = db.Column(db.String(250), nullable=False)
@@ -156,6 +158,7 @@ def add_new():
         adresse = request.form.get("adresse").split(", ")[0]
         ville = request.form.get("adresse").split(", ")[1]
         url_image = request.form.get("photo")
+        site_url = request.form.get("site_url")
         adresse_url = request.form.get("adresse_url")
         is_spa = boolean_reponse(request.form.get("is_spa"))
         is_cours = boolean_reponse(request.form.get("is_cours"))
@@ -189,6 +192,7 @@ def add_new():
             adresse=adresse,
             ville = ville,
             url_image=url_image,
+            site_url = site_url,
             adresse_url=adresse_url,
             is_spa=is_spa,
             is_cours=is_cours,
@@ -207,6 +211,7 @@ def add_new():
             prix_mensuel = prix_mensuel,
             note_general = note_general,
             note_general_nombre = note_general_nombre
+
         )
         db.session.add(fitness)
         db.session.commit()
@@ -221,7 +226,7 @@ def commenter():
     fitness = Fitness.query.filter_by(id=id).first()
     form = CommentaireForm()
     if request.method == "POST":
-        commentaire = request.form.get("ckeditor")[3:-4]
+        commentaire = unescape(request.form.get("ckeditor")[3:-4])
         id_fitness = id
         name_fitness = fitness.name
         user_id = flask_login.current_user.id
@@ -269,11 +274,9 @@ def commenter():
                      "note_spa": [fitness.note_spa, fitness.note_spa_nombre],
                      "note_cours": [fitness.note_cours, fitness.note_cours_nombre]}
 
-        print(new_notes)
-        print(old_notes)
         averages_notes = update_moyenne(old_notes,new_notes)
         averages_notes_tab = [item[0] for (key,item) in averages_notes.items()]
-        print(averages_notes_tab)
+
 
         if note_equipement!=None or note_cours!=None or note_spa!=None or note_personnel!=None or note_proprete!=None:
             fitness.note_general_nombre += 1

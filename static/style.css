@@ -22,14 +22,19 @@
 
 .img_container{
     float:left;
-    width: 120px;
-    height: 120px;
+    width: 200px;
+    height: 180px;
     overflow: hidden;
 }
 
 a{
     text-decoration:none;
     color:#ff5757;
+}
+
+.header_info_text{
+    margin-left:300px;
+    font-family: 'Nunito', sans-serif;
 }
 
 .custom_nav{
@@ -167,13 +172,40 @@ form{
 .prix_index{
     position:absolute;
     left:30%;
-    top: 5%;
+    top: 20%;
     font-family: 'Nunito', sans-serif;
 }
 .francs_index{
     font-size:1.1rem;
 }
+
 .header_info{
-padding-top:12%;
+padding-top:10%;
+width: 80%;
+margin:auto;
 }
+@media only screen and (max-width: 1000px) {
+  .header_info{
+    padding-top:18%;
+  }
+}
+.custom-button{
+    background-color:#4CAF50;
+    color:white;
+
+}
+.table{
+    width:80%;
+    margin:auto;
+}
+.commentaires{
+    padding-top: 50px;
+    width:80%;
+    margin:auto;
+    padding-bottom: 50px;
+}
+.titre_commentaires{
+    font-family: 'Nunito', sans-serif;
+}
+
 

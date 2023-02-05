@@ -53,11 +53,25 @@
                <h6>⭐️ {{fitness.note_general}} {{appreciation(fitness.note_general)}} ({{fitness.note_general_nombre|int}} avis)</h6>
                </div>
               <div class="bouton-fitness col-sm-4">
-                  <h2 class="prix_index">{{fitness.prix_mensuel}} <span class="francs_index">Frs/mois</span></h2>
+                  <div class="prix_index">
+                      <h3>Prix moyen:</h3>
+                  <h2>{{fitness.prix_mensuel}} <span class="francs_index">Frs/mois</span></h2>
+                  <p class="icon">
+                      {% if fitness.is_spa == True %}
+                      <img src="static/001-sauna.png" alt="">
+                      {% endif %}
+                      {% if fitness.is_piscine == True %}
+                      <img src="static/002-swimming-pool.png" alt="">
+                      {% endif %}
+                      {% if fitness.is_cours == True %}
+                      <img src="static/003-faire-de-lexercice.png" alt="">
+                      {% endif %}
+                  </p>
+                  </div>
                   <div class="boutons-ensemble">
-                <a href={{url_for('info', id = fitness.id)}} class="btn btn-primary">+ d'info</a>
+                <a href={{url_for('info', id = fitness.id)}} class="btn custom-button">+ d'info</a>
                 {% if current_user.is_authenticated %}
-                <a href={{url_for('commenter', id_fitness = fitness.id)}} class="btn btn-danger">Commenter/Noter</a>
+                <a href={{url_for('commenter', id_fitness = fitness.id)}} class="btn custom-button">Commenter/Noter</a>
                 {% endif %}
                   </div>
               </div>

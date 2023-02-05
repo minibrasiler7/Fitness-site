@@ -21,6 +21,7 @@ class FitnessForm(FlaskForm):
     adresse = StringField('Adresse', validators=[DataRequired()])
     photo = StringField("URL de l'image", validators=[DataRequired(), URL()])
     adresse_url = StringField("URL de l'adresse", validators=[DataRequired(), URL()])
+    site_url = StringField("URL du site", validators=[DataRequired(), URL()])
     note_equipement = SelectField("Equipement", choices=["Je ne souhaite pas donner mon avis", '🏋', '🏋🏋', "🏋🏋🏋", "🏋🏋🏋🏋", "🏋🏋🏋🏋🏋"])
     note_personnel = SelectField("Personnel", choices=["Je ne souhaite pas donner mon avis", '🙋',"🙋🙋", "🙋🙋🙋", "🙋🙋🙋🙋", "🙋🙋🙋🙋🙋"])
     note_proprete = SelectField("Propreté", choices=["Je ne souhaite pas donner mon avis",'🧹', "🧹🧹", "🧹🧹🧹", "🧹🧹🧹🧹", "🧹🧹🧹🧹🧹"])
