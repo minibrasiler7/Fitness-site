@@ -1,9 +1,7 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField, FloatField
 from wtforms.validators import DataRequired, Email, URL
-import email_validator
-from datetime import time
+
 
 time = ["fermé", "24/24"]
 
