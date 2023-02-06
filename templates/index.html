@@ -23,13 +23,15 @@
 
 <div class="container-fluid header">
 <div class="titre row">
-    <img src="static/muscle_logo.png" class="homme_mucle_img col-sm-6 col-md-5 col-lg-4" alt="">
-    <div class="slogan col-sm-6 col-md-5 col-lg-4">
+    <div class="col-sm-6 col-md-5 col-lg-4">
+    <img src="static/muscle_logo.png" class="homme_muscle_img" alt="">
+    </div>
+    <div class="slogan col-sm-6 col-md-5 col-lg-6">
     <h1>Trouve le meilleur FITNESS</h1>
     <h3>Gagne du temps grâce à nos avis!  Choisis le fitness qui te correspond le mieux !</h3>
     <div class="search-container">
-  <form action="#" class="search-form">
-    <input type="text" class="text_input" placeholder="Rechercher...">
+    <form action="" class="search-form" method="post">
+    <input type="text" class="text_input" name="recherche" placeholder="Rechercher...">
     <button type="submit" class="text_submit">Rechercher</button>
   </form>
 </div>
@@ -39,20 +41,23 @@
 </div>
 
   <div class="container-fluid list-fitness">
-    <h2 class="titre-list">Tous les fitness répertoriés</h2>
+    <h2 class="titre-list">Tous les FITNESS répertoriés</h2>
 
 {% for fitness in fitness_tab %}
-      <div class="container-fluid presentation-fitness">
-          <div class="row">
-              <img class="col-sm-4 img-banniere" src={{fitness.url_image}} alt="Card image cap">
-              <div class="banniere-fitness col-sm-4">
+
+          <div class="row presentation-fitness">
+              <div class="col-md-4">
+              <img class="img-banniere" src={{fitness.url_image}} alt="Card image cap">
+              </div>
+
+              <div class="banniere-fitness col-md-4">
                <h4 class="fitness-name">{{fitness.name}}</h4>
                <p class="">{{fitness.adresse}}</p>
                <p class="">{{fitness.ville}}</p>
                <p class=""><a href={{fitness.adresse_url}}>Voir sur la google map</a></p>
                <h6>⭐️ {{fitness.note_general}} {{appreciation(fitness.note_general)}} ({{fitness.note_general_nombre|int}} avis)</h6>
                </div>
-              <div class="bouton-fitness col-sm-4">
+              <div class="bouton-fitness col-md-4">
                   <div class="prix_index">
                       <h3>Prix moyen:</h3>
                   <h2>{{fitness.prix_mensuel}} <span class="francs_index">Frs/mois</span></h2>
@@ -75,13 +80,11 @@
                 {% endif %}
                   </div>
               </div>
-          </div>
+
       </div>
-
-
-
 {% endfor %}
   </div>
+    </div>
 
 {% endblock %}
 

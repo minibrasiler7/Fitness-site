@@ -52,6 +52,7 @@ class Fitness(db.Model):
     adresse = db.Column(db.String(250), nullable=False, unique=True)
     site_url = db.Column(db.String(250), nullable=False, unique=True)
     ville= db.Column(db.String(250), nullable=False, unique=True)
+    code_postal = db.Column(db.Integer)
     url_image = db.Column(db.String(250), nullable=False)
     adresse_url = db.Column(db.String(250), nullable=False)
     note_equipement = db.Column(db.Float(250), nullable=False)
@@ -101,8 +102,17 @@ def jours_horaire(jour_debut, jour_fin):
     else:
         return f"{jour_debut} - {jour_fin}"
 
-@app.route("/")
+@app.route("/", methods=["GET","POST"])
 def home():
+    if request.method == "POST":
+
+            data= request.form.get("recherche").title()
+            fitness_tab=Fitness.query.filter_by(ville=data).all()
+            if len(fitness_tab) == 0 :
+                fitness_tab= Fitness.query.filter_by(code_postal=data).all()
+                if len(fitness_tab) == 0 :
+                    fitness_tab= Fitness.query.filter_by(name=data).all()
+            return render_template("index.html",fitness_tab = fitness_tab, appreciation=appreciation)
     fitness_tab = db.session.query(Fitness).all()
     return render_template("index.html",fitness_tab = fitness_tab, appreciation=appreciation)
 
@@ -169,7 +179,8 @@ def add_new():
     if request.method == "POST":
         name = request.form.get("fitness_name")
         adresse = request.form.get("adresse").split(", ")[0]
-        ville = request.form.get("adresse").split(", ")[1]
+        code_postal = request.form.get("adresse").split(", ")[1].split(" ")[0]
+        ville = request.form.get("adresse").split(", ")[1].split(" ")[1]
         url_image = request.form.get("photo")
         site_url = request.form.get("site_url")
         adresse_url = request.form.get("adresse_url")
@@ -216,6 +227,7 @@ def add_new():
             url_image=url_image,
             site_url = site_url,
             adresse_url=adresse_url,
+            code_postal=code_postal,
             is_spa=is_spa,
             is_cours=is_cours,
             note_equipement = note_equipement,
