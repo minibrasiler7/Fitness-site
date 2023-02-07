@@ -85,10 +85,8 @@ h1{
 }
 
 .search-container {
-
   margin-top:5%;
   margin-bottom:5%;
-
   justify-content: center;
   align-items: center;
   height: 50px;
@@ -161,6 +159,13 @@ form{
 }
 .bouton-fitness{
     padding-top:5%;
+
+}
+
+@media only screen and (max-width: 768px) {
+  .bouton-fitness{
+    padding-bottom:5%;
+  }
 }
 .boutons-ensemble{
     width:100%;
@@ -188,7 +193,6 @@ margin:auto;
 .custom-button{
     background-color:#4CAF50;
     color:white;
-
 }
 .table{
     width:80%;
@@ -220,6 +224,25 @@ margin:auto;
     text-align:center;
     background-color:blue;
 }
+.nav-item{
+    margin-auto;
+}
+
+@media only screen and (max-width: 1000px) {
+  .nav-item{
+    padding-left:6%;
+  }
+}
+.header-contact{
+    margin-top:7%;
+    height: 200px;
+    background-color: #ff5757;
+    color:white;
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+}
+
+
 
 
 

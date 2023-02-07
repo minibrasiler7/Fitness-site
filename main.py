@@ -133,8 +133,6 @@ def login():
         else:
             flash("Sorry we didn't find you.")
             return redirect(url_for('login'))
-
-
     return render_template("login.html", form = form)
 
 @app.route("/register", methods=["GET","POST"])
@@ -192,7 +190,6 @@ def add_new():
         note_cours = None
         if is_spa:
             note_spa = note_to_data(request.form.get("note_spa"))
-            print(note_spa)
         if is_cours:
             note_cours = note_to_data(request.form.get("note_cours"))
         if is_piscine:
@@ -338,6 +335,9 @@ def commenter():
 
     return render_template("commenter.html", fitness=fitness, form = form)
 
+@app.route("/contact", methods = ["GET", "POST"])
+def contact():
+    return render_template("contact.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
