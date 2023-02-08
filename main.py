@@ -1,6 +1,6 @@
 import flask_login
 from flask import Flask, render_template, request, redirect, url_for, flash
-from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm
+from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm, ContactForm
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -9,6 +9,7 @@ from note_method import *
 from flask_ckeditor import CKEditor
 import datetime
 from html import unescape
+import smtplib
 
 login_manager = LoginManager()
 
@@ -105,14 +106,14 @@ def jours_horaire(jour_debut, jour_fin):
 @app.route("/", methods=["GET","POST"])
 def home():
     if request.method == "POST":
-
-            data= request.form.get("recherche").title()
-            fitness_tab=Fitness.query.filter_by(ville=data).all()
+            data = request.form.get("recherche").title()
+            fitness_tab = Fitness.query.filter_by(ville=data).all()
             if len(fitness_tab) == 0 :
                 fitness_tab= Fitness.query.filter_by(code_postal=data).all()
                 if len(fitness_tab) == 0 :
                     fitness_tab= Fitness.query.filter_by(name=data).all()
-            return render_template("index.html",fitness_tab = fitness_tab, appreciation=appreciation)
+
+            return render_template("index.html",fitness_tab = fitness_tab, appreciation=appreciation, h2=data)
     fitness_tab = db.session.query(Fitness).all()
     return render_template("index.html",fitness_tab = fitness_tab, appreciation=appreciation)
 
@@ -337,7 +338,41 @@ def commenter():
 
 @app.route("/contact", methods = ["GET", "POST"])
 def contact():
-    return render_template("contact.html")
+    form = ContactForm()
+    if request.method == "POST":
+        nom = request.form.get("nom")
+        email = request.form.get("email")
+        adresse = request.form.get("adresse")
+        ville = request.form.get("ville")
+        is_piscine = request.form.get("is_piscine")
+        is_cours = request.form.get("is_cours")
+        is_spa = request.form.get("is_spa")
+        commentaire = unescape(request.form.get("ckeditor")[3:-4])
+        message = f"Nouveau fitness à ajouter \n " \
+                  f"Nom: {nom} \n" \
+                  f"Email du propriétaire: {email} \n" \
+                  f"Adresse du fitness: {adresse} \n" \
+                  f"Ville : {ville}\n" \
+                  f"Piscine? : {is_piscine}\n" \
+                  f"Cours? : {is_cours}\n" \
+                  f"SPA? : {is_spa}\n" \
+                  f"Commentaire?: {commentaire}"
+
+        smtp_server = "smtp.gmail.com"
+        to_adr = "loic_Strauch_19@msn.com"
+        from_adr = "loicstrauch123@gmail.com"
+        password = "vouelukgzkutyvji"
+        print(message)
+
+        with smtplib.SMTP_SSL(smtp_server) as connection:
+            connection.login(from_adr, password)
+            connection.sendmail(from_addr=from_adr,
+                                to_addrs=to_adr,
+                                msg= f"Subject: New fitness! \n\n {message}".encode('utf-8'))
+
+
+
+    return render_template("contact.html", form = form)
 
 if __name__ == "__main__":
     app.run(debug=True)

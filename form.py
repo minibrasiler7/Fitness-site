@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField, FloatField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, BooleanField, FloatField, IntegerField
 from wtforms.validators import DataRequired, Email, URL
 import email_validator
 
@@ -70,6 +70,18 @@ class CommentaireForm(FlaskForm):
      note_spa = SelectField("Zone spa", choices=["Je ne souhaite pas donner mon avis","💆", "💆💆", "💆💆💆", "💆💆💆💆", "💆💆💆💆💆"])
      note_piscine = SelectField("Piscine", choices=["Je ne souhaite pas donner mon avis", '🏊', "🏊🏊", "🏊🏊🏊", "🏊🏊🏊🏊", "🏊🏊🏊🏊🏊"])
      commenter = SubmitField('Register')
+
+
+class ContactForm(FlaskForm):
+     nom = StringField('Nom de votre fitness', validators=[DataRequired()])
+     email = StringField('Votre email', validators=[DataRequired()])
+     adresse = StringField('Adresse de votre fitness', validators=[DataRequired()])
+     code_postal = IntegerField(validators=[DataRequired()])
+     ville = StringField('Ville de votre fitness', validators=[DataRequired()])
+     is_piscine = BooleanField("Y'a t-il une piscine? Cocher si oui")
+     is_spa = BooleanField("Y'a t-il un sauna ou hammam? Cocher si oui")
+     is_cours = BooleanField("Y'a t-il des cours collectifs? Cocher si oui")
+     envoyer = SubmitField('Envoyer')
 
 
 

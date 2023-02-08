@@ -5,7 +5,26 @@
 
 {% block content %}
 <div class="header-contact">
-    <h2>Contactez-moi</h2>
+    <h2 class="h2-contact">Contactez-moi</h2>
+</div>
+<div class="content-contact">
+    <h3>Votre fitness n'est pas sur le site?</h3>
+    <p>Contactez moi afin que je puisse l'ajouter. Vous pouvez m'envoyer le formulaire ci-dessous.</p>
+    <form class="form form-horizontal contact-form" method="post" role="form">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_errors(form, hiddens="only") }}
+        {{ wtf.form_field(form.nom) }}
+        {{ wtf.form_field(form.adresse) }}
+        {{ wtf.form_field(form.code_postal) }}
+        {{ wtf.form_field(form.ville) }}
+        {{ wtf.form_field(form.is_spa) }}
+        {{ wtf.form_field(form.is_piscine) }}
+        {{ wtf.form_field(form.is_cours) }}
+        <p>Autre commentaires:</p>
+        {{ ckeditor.load(pkg_type="basic") }}
+        {{ ckeditor.create() }}
+        {{ wtf.form_field(form.envoyer) }}
+        </form>
 </div>
 
 {% endblock %}

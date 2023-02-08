@@ -241,6 +241,18 @@ margin:auto;
     font-family: 'Nunito', sans-serif;
     text-align: center;
 }
+.h2-contact{
+    margin:auto;
+    position:relative;
+    top:50%;
+}
+
+.content-contact{
+    margin:auto;
+    width: 80%;
+    padding-top:5%;
+}
+
 
 
 

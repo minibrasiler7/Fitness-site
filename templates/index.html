@@ -41,7 +41,11 @@
 </div>
 
 <div class="container-fluid list-fitness">
+    {% if h2|length == 0 %}
     <h2 class="titre-list">Tous les FITNESS répertoriés</h2>
+    {% else %}
+    <h2 class="titre-list">Recherche entré : {{h2}}</h2>
+    {% endif %}
     {% for fitness in fitness_tab %}
     <div class="row presentation-fitness">
         <div class="col-md-4">
