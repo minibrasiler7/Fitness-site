@@ -7,12 +7,10 @@
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {% for message in messages %}
-{% if message == "You were successfully Register" %}
+
 <p class="positive_flash">{{ message }}</p>
-{% endif%}
-{% if message == "Félicitation votre commentaire a été enregistré!" %}
-<p class="positive_flash">{{ message }}</p>
-{% endif%}
+
+
 {% endfor %}
 {% endif %}
 {% endwith %}
@@ -79,6 +77,9 @@
                 <a href={{url_for('info', id=fitness.id)}} class="btn custom-button">+ d'info</a>
                 {% if current_user.is_authenticated %}
                 <a href={{url_for('commenter', id_fitness=fitness.id)}} class="btn custom-button">Commenter/Noter</a>
+                {% endif %}
+                {% if current_user.id == 1%}
+                <a href={{url_for('delete', id_fitness=fitness.id)}} class="btn custom-button">✗</a>
                 {% endif %}
             </div>
         </div>

@@ -10,6 +10,7 @@ from flask_ckeditor import CKEditor
 import datetime
 from html import unescape
 import smtplib
+from functools import wraps
 
 login_manager = LoginManager()
 
@@ -23,6 +24,16 @@ ckeditor = CKEditor(app)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if flask_login.current_user.id != 1:
+            return redirect(url_for('home', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 
 ##CREATE DATABASE
@@ -173,6 +184,7 @@ def info():
     return render_template("info.html", fitness=fitness, commentaires = commentaires)
 @app.route("/add", methods=["GET", "POST"])
 @login_required
+@admin_required
 def add_new():
     form = FitnessForm()
     if request.method == "POST":
@@ -369,10 +381,18 @@ def contact():
             connection.sendmail(from_addr=from_adr,
                                 to_addrs=to_adr,
                                 msg= f"Subject: New fitness! \n\n {message}".encode('utf-8'))
-
+        flash("Votre email a été envoyé à l'administrateur du site!")
+        return redirect(url_for("home"))
 
 
     return render_template("contact.html", form = form)
+
+@app.route("/delete", methods = ["GET", "POST"])
+@login_required
+@admin_required
+def delete():
+
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(debug=True)
