@@ -13,13 +13,16 @@ def is_there_note(note):
         return 0
 
 def moyenne(notes):
-    number_note = 0
-    sum = 0
-    for note in notes:
-        if note !=None:
-            number_note += 1
-            sum += note
-    return round(sum/number_note,2)
+    if not all(note is None for note in notes):
+        number_note = 0
+        sum = 0
+        for note in notes:
+            if note !=None:
+                number_note += 1
+                sum += note
+        return round(sum/number_note,2)
+    else:
+        return None
 
 def boolean_reponse(box):
     if box=="y":

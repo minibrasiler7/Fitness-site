@@ -63,11 +63,11 @@ class Fitness(db.Model):
     name = db.Column(db.String(250), nullable=False)
     adresse = db.Column(db.String(250), nullable=False, unique=True)
     site_url = db.Column(db.String(250), nullable=False, unique=True)
-    ville= db.Column(db.String(250), nullable=False, unique=True)
+    ville= db.Column(db.String(250), nullable=False)
     code_postal = db.Column(db.Integer)
     url_image = db.Column(db.String(250), nullable=False)
     adresse_url = db.Column(db.String(250), nullable=False)
-    note_equipement = db.Column(db.Float(250), nullable=False)
+    note_equipement = db.Column(db.Float(250))
     note_equipement_nombre = db.Column(db.Integer)
     note_personnel = db.Column(db.Float(250))
     note_personnel_nombre = db.Column(db.Integer)
@@ -96,6 +96,15 @@ class Fitness(db.Model):
     #Optional: this will allow each user object to be identified by its username when printed.
     def __repr__(self):
         return f'<Fitness {self.name}>'
+
+class Note_user_fitness(db.Model, UserMixin):
+    __tablename__ = 'noteuserfitness'
+    id = db.Column(db.Integer, primary_key= True)
+    id_fitness = db.Column(db.Integer, nullable=False)
+    id_user = db.Column(db.Integer, nullable = False)
+    #Optional: this will allow each user object to be identified by its username when printed.
+    def __repr__(self):
+        return f'<User {self.username}>'
 
 class Commentaire(db.Model):
     __tablename__ = 'comments'
@@ -241,6 +250,7 @@ def add_new():
             code_postal=code_postal,
             is_spa=is_spa,
             is_cours=is_cours,
+            is_piscine = is_piscine,
             note_equipement = note_equipement,
             note_equipement_nombre = note_equipement_nombre,
             note_cours = note_cours,
@@ -305,46 +315,55 @@ def commenter():
             db.session.add(comment)
             db.session.commit()
             flash("Félicitation votre commentaire a été enregistré!")
-        note_equipement = note_to_data(request.form.get("note_equipement"))
-        note_personnel = note_to_data(request.form.get("note_personnel"))
-        note_proprete = note_to_data(request.form.get("note_proprete"))
-        note_spa=None
-        if fitness.is_spa:
-            note_spa = note_to_data(request.form.get("note_spa"))
-        note_cours =None
-        if fitness.is_cours:
-            note_cours = note_to_data(request.form.get("note_cours"))
-        new_notes = {"note_equipement": note_equipement,
-                     "note_personnel": note_personnel,
-                     "note_proprete": note_proprete,
-                     "note_spa": note_spa,
-                     "note_cours":note_cours}
-        old_notes = {"note_equipement": [fitness.note_equipement, fitness.note_equipement_nombre],
-                     "note_personnel": [fitness.note_personnel, fitness.note_personnel_nombre],
-                     "note_proprete": [fitness.note_proprete, fitness.note_proprete_nombre],
-                     "note_spa": [fitness.note_spa, fitness.note_spa_nombre],
-                     "note_cours": [fitness.note_cours, fitness.note_cours_nombre]}
 
-        averages_notes = update_moyenne(old_notes,new_notes)
-        averages_notes_tab = [item[0] for (key,item) in averages_notes.items()]
+        check_nombre_comment = len(Note_user_fitness.query.filter_by(id_fitness=fitness.id, id_user=user_id).all())
+        if check_nombre_comment<1:
+            note_equipement = note_to_data(request.form.get("note_equipement"))
+            note_personnel = note_to_data(request.form.get("note_personnel"))
+            note_proprete = note_to_data(request.form.get("note_proprete"))
+            note_spa=None
+            if fitness.is_spa:
+                note_spa = note_to_data(request.form.get("note_spa"))
+            note_cours =None
+            if fitness.is_cours:
+                note_cours = note_to_data(request.form.get("note_cours"))
+            new_notes = {"note_equipement": note_equipement,
+                         "note_personnel": note_personnel,
+                         "note_proprete": note_proprete,
+                         "note_spa": note_spa,
+                         "note_cours":note_cours}
+            old_notes = {"note_equipement": [fitness.note_equipement, fitness.note_equipement_nombre],
+                         "note_personnel": [fitness.note_personnel, fitness.note_personnel_nombre],
+                         "note_proprete": [fitness.note_proprete, fitness.note_proprete_nombre],
+                         "note_spa": [fitness.note_spa, fitness.note_spa_nombre],
+                         "note_cours": [fitness.note_cours, fitness.note_cours_nombre]}
+
+            averages_notes = update_moyenne(old_notes,new_notes)
+            averages_notes_tab = [item[0] for (key,item) in averages_notes.items()]
 
 
-        if note_equipement!=None or note_cours!=None or note_spa!=None or note_personnel!=None or note_proprete!=None:
-            fitness.note_general_nombre += 1
-            fitness.note_equipement = averages_notes['note_equipement'][0]
-            fitness.note_equipement_nombre = averages_notes['note_equipement'][1]
-            fitness.note_personnel = averages_notes['note_personnel'][0]
-            fitness.note_personnel_nombre= averages_notes['note_personnel'][1]
-            fitness.note_proprete = averages_notes['note_proprete'][0]
-            fitness.note_proprete_nombre= averages_notes['note_proprete'][1]
-            fitness.note_spa = averages_notes['note_spa'][0]
-            fitness.note_spa_nombre= averages_notes['note_spa'][1]
-            fitness.note_cours = averages_notes['note_cours'][0]
-            fitness.note_cours_nombre= averages_notes['note_cours'][1]
-            fitness.note_general= moyenne(averages_notes_tab)
-            db.session.commit()
-
-        return redirect(url_for('home'))
+            if note_equipement!=None or note_cours!=None or note_spa!=None or note_personnel!=None or note_proprete!=None:
+                fitness.note_general_nombre += 1
+                fitness.note_equipement = averages_notes['note_equipement'][0]
+                fitness.note_equipement_nombre = averages_notes['note_equipement'][1]
+                fitness.note_personnel = averages_notes['note_personnel'][0]
+                fitness.note_personnel_nombre= averages_notes['note_personnel'][1]
+                fitness.note_proprete = averages_notes['note_proprete'][0]
+                fitness.note_proprete_nombre= averages_notes['note_proprete'][1]
+                fitness.note_spa = averages_notes['note_spa'][0]
+                fitness.note_spa_nombre= averages_notes['note_spa'][1]
+                fitness.note_cours = averages_notes['note_cours'][0]
+                fitness.note_cours_nombre= averages_notes['note_cours'][1]
+                fitness.note_general= moyenne(averages_notes_tab)
+                note_user_fitness = Note_user_fitness(id_fitness = fitness.id,
+                                  id_user = user_id
+                                  )
+                db.session.add(note_user_fitness)
+                db.session.commit()
+            return redirect(url_for('home'))
+        else:
+            flash("Vous avez déjà donné votre avis sur ce fitness")
+            return redirect(url_for("home"))
 
 
     return render_template("commenter.html", fitness=fitness, form = form)

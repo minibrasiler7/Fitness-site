@@ -7,8 +7,11 @@
 {% with messages = get_flashed_messages() %}
 {% if messages %}
 {% for message in messages %}
-
+{% if message == "Vous avez déjà donné votre avis sur ce fitness"%}
+<p class="negative_flash_index">{{ message }}</p>
+{% else %}
 <p class="positive_flash">{{ message }}</p>
+{% endif %}
 
 
 {% endfor %}
@@ -54,8 +57,13 @@
             <p class="">{{fitness.adresse}}</p>
             <p class="">{{fitness.code_postal}} {{fitness.ville}}</p>
             <p class=""><a href={{fitness.adresse_url}}>Voir sur la google map</a></p>
+            {% if fitness.note_general != None%}
             <h6>⭐️ {{fitness.note_general}} {{appreciation(fitness.note_general)}} ({{fitness.note_general_nombre|int}}
                 avis)</h6>
+            {% else %}
+            <h6>Pas encore noté</h6>
+            {% endif %}
+
         </div>
         <div class="bouton-fitness col-md-4">
             <div class="prix_index">
