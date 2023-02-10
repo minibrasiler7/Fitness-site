@@ -83,5 +83,18 @@ class ContactForm(FlaskForm):
      is_cours = BooleanField("Y'a t-il des cours collectifs? Cocher si oui")
      envoyer = SubmitField('Envoyer')
 
+class Updateform(FlaskForm):
+     nom = StringField('Nom de votre fitness', validators=[DataRequired()])
+     url_site = StringField('Site du fitness', validators=[DataRequired()])
+     url_map = StringField('URL google maps', validators=[DataRequired()])
+     url_image = StringField('URL image du fitness', validators=[DataRequired()])
+     adresse = StringField('Adresse de votre fitness', validators=[DataRequired()])
+     code_postal = IntegerField(validators=[DataRequired()])
+     ville = StringField('Ville de votre fitness', validators=[DataRequired()])
+     is_piscine = BooleanField("Y'a t-il une piscine? Cocher si oui")
+     is_spa = BooleanField("Y'a t-il un sauna ou hammam? Cocher si oui")
+     is_cours = BooleanField("Y'a t-il des cours collectifs? Cocher si oui")
+     envoyer = SubmitField('Envoyer')
+
 
 

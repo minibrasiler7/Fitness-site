@@ -81,6 +81,9 @@
                 {% if current_user.id == 1%}
                 <a href={{url_for('delete', id_fitness=fitness.id)}} class="btn custom-button">✗</a>
                 {% endif %}
+                {% if current_user.id == 1%}
+                <a href={{url_for('update', id_fitness=fitness.id)}} class="btn custom-button">🔄</a>
+                {% endif %}
             </div>
         </div>
 

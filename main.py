@@ -1,6 +1,6 @@
 import flask_login
 from flask import Flask, render_template, request, redirect, url_for, flash
-from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm, ContactForm
+from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm, ContactForm, Updateform
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -79,6 +79,7 @@ class Fitness(db.Model):
     note_cours = db.Column(db.Float(250))
     note_cours_nombre = db.Column(db.Integer)
     is_spa = db.Column(db.Boolean)
+    is_piscine = db.Column(db.Boolean)
     note_spa = db.Column(db.Float(250))
     note_spa_nombre = db.Column(db.Integer)
     prix_mensuel = db.Column(db.Float(250))
@@ -391,8 +392,48 @@ def contact():
 @login_required
 @admin_required
 def delete():
-
+    id = request.args.get("id_fitness")
+    fitness = Fitness.query.filter_by(id=id).first()
+    db.session.delete(fitness)
+    db.session.commit()
     return redirect(url_for("home"))
+
+@app.route("/update", methods = ["GET", "POST"])
+@login_required
+@admin_required
+def update():
+    id = request.args.get("id_fitness")
+    form = Updateform()
+    if request.method == "POST":
+        fitness = Fitness.query.filter_by(id=id).first()
+        fitness.name = form.nom.data
+        fitness.site_url = form.url_site.data
+        fitness.adresse = form.adresse.data
+        fitness.adresse_url = form.url_map.data
+        fitness.url_image = form.url_image.data
+        fitness.is_spa = form.is_spa.data
+        fitness.is_piscine = form.is_piscine.data
+        fitness.is_cours = form.is_cours.data
+        fitness.code_postal = form.code_postal.data
+        fitness.ville = form.ville.data
+        db.session.commit()
+        return redirect(url_for("home"))
+
+
+    fitness = Fitness.query.filter_by(id=id).first()
+    form.is_piscine.data = fitness.is_piscine
+    form.url_site.data = fitness.site_url
+    form.url_image.data = fitness.url_image
+    form.url_map.data = fitness.adresse_url
+    form.is_spa.data = fitness.is_spa
+    form.is_cours.data = fitness.is_cours
+    form.nom.data = fitness.name
+    form.adresse.data = fitness.adresse
+    form.code_postal.data = fitness.code_postal
+    form.ville.data = fitness.ville
+    return render_template("update.html", form=form, fitness=fitness)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
