@@ -12,6 +12,8 @@ from html import unescape
 import smtplib
 from functools import wraps
 
+
+
 login_manager = LoginManager()
 
 app = Flask(__name__)
@@ -19,6 +21,8 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
 login_manager.init_app(app)
 ckeditor = CKEditor(app)
+
+
 
 
 @login_manager.user_loader
@@ -463,3 +467,7 @@ def update():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
