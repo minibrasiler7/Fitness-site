@@ -413,6 +413,13 @@ def contact():
 def delete():
     id = request.args.get("id_fitness")
     fitness = Fitness.query.filter_by(id=id).first()
+    commentaires = Commentaire.query.filter_by(id_fitness = id).all()
+    print(commentaires)
+    notes_user_fitness = Note_user_fitness.query.filter_by(id_fitness = id).all()
+    for commentaire in commentaires:
+        db.session.delete(commentaire)
+    for note_user_fitness in notes_user_fitness:
+        db.session.delete(note_user_fitness)
     db.session.delete(fitness)
     db.session.commit()
     return redirect(url_for("home"))
