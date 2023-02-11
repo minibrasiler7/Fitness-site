@@ -11,16 +11,22 @@ import datetime
 from html import unescape
 import smtplib
 from functools import wraps
+import logging
+
+
 
 
 
 login_manager = LoginManager()
 
 app = Flask(__name__)
+
+app.logger.setLevel(logging.ERROR)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
 login_manager.init_app(app)
 ckeditor = CKEditor(app)
+
 
 
 
