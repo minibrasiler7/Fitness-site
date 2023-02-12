@@ -1,5 +1,5 @@
 import flask_login
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm, ContactForm, Updateform
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -11,28 +11,22 @@ import datetime
 from html import unescape
 import smtplib
 from functools import wraps
-import logging
 
 
 
 login_manager = LoginManager()
 
 app = Flask(__name__)
-
-app.logger.setLevel(logging.ERROR)
 bootstrap = Bootstrap(app)
-app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
+app.config['SECRET_KEY'] = 'idzq736hjqwdiugdbqwiu'
 login_manager.init_app(app)
 ckeditor = CKEditor(app)
 
 
 
-
-
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
-
+    return User.query.get(user_id)
 
 def admin_required(f):
     @wraps(f)
@@ -155,6 +149,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user!= None:
             if check_password_hash(user.password, password):
+                session['username']= request.form.get("email")
                 login_user(user, remember=True)
                 return redirect(url_for('home'))
             else:
@@ -194,6 +189,7 @@ def register():
 def log_out():
     user = current_user
     user.authenticated = False
+    session.pop('username', None)
     logout_user()
     return redirect(url_for("home"))
 
