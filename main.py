@@ -15,8 +15,6 @@ import logging
 
 
 
-
-
 login_manager = LoginManager()
 
 app = Flask(__name__)
