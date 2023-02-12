@@ -4,7 +4,7 @@ from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm, ContactF
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from note_method import *
 from flask_ckeditor import CKEditor
 import datetime
@@ -190,7 +190,10 @@ def register():
     return render_template("register.html", form = form)
 
 @app.route("/log_out")
+@login_required
 def log_out():
+    user = current_user
+    user.authenticated = False
     logout_user()
     return redirect(url_for("home"))
 
