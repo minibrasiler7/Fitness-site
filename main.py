@@ -31,7 +31,7 @@ ckeditor = CKEditor(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    return User.query.get(int(user_id))
 
 
 def admin_required(f):
@@ -155,7 +155,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user!= None:
             if check_password_hash(user.password, password):
-                login_user(user)
+                login_user(user, remember=True)
                 return redirect(url_for('home'))
             else:
                 flash("Sorry you password is not correct please try again...")
