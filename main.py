@@ -1,5 +1,5 @@
 import flask_login
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash
 from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm, ContactForm, Updateform
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -11,8 +11,6 @@ import datetime
 from html import unescape
 import smtplib
 from functools import wraps
-
-
 
 login_manager = LoginManager()
 
@@ -149,7 +147,6 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user!= None:
             if check_password_hash(user.password, password):
-                session['username']= request.form.get("email")
                 login_user(user, remember=True)
                 return redirect(url_for('home'))
             else:
@@ -189,7 +186,6 @@ def register():
 def log_out():
     user = current_user
     user.authenticated = False
-    session.pop('username', None)
     logout_user()
     return redirect(url_for("home"))
 
@@ -200,7 +196,6 @@ def info():
     commentaires = Commentaire.query.filter_by(id_fitness=fitness.id)
     return render_template("info.html", fitness=fitness, commentaires = commentaires)
 @app.route("/add", methods=["GET", "POST"])
-@login_required
 @admin_required
 def add_new():
     form = FitnessForm()
@@ -415,7 +410,6 @@ def contact():
     return render_template("contact.html", form = form)
 
 @app.route("/delete", methods = ["GET", "POST"])
-@login_required
 @admin_required
 def delete():
     id = request.args.get("id_fitness")
@@ -432,7 +426,6 @@ def delete():
     return redirect(url_for("home"))
 
 @app.route("/update", methods = ["GET", "POST"])
-@login_required
 @admin_required
 def update():
     id = request.args.get("id_fitness")
