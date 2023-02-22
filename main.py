@@ -1,5 +1,5 @@
 import flask_login
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session, abort
 from form import LoginForm, RegisterForm, FitnessForm, CommentaireForm, ContactForm, Updateform
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -11,12 +11,15 @@ import datetime
 from html import unescape
 import smtplib
 from functools import wraps
+import os
 
 login_manager = LoginManager()
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
-app.config['SECRET_KEY'] = 'idzq736hjqwdiugdbqwiu'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 login_manager.init_app(app)
 ckeditor = CKEditor(app)
 
@@ -25,6 +28,14 @@ ckeditor = CKEditor(app)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
+def login_is_required(function):
+    def wrapper(*args, **kwargs):
+        if "google_id" not in session:
+            return abort(401)
+        else:
+            return function()
+    return wrapper
 
 def admin_required(f):
     @wraps(f)
@@ -148,6 +159,7 @@ def login():
         if user!= None:
             if check_password_hash(user.password, password):
                 login_user(user, remember=True)
+                session['username'] = user.username
                 return redirect(url_for('home'))
             else:
                 flash("Sorry you password is not correct please try again...")
